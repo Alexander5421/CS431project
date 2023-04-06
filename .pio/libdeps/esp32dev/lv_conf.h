@@ -86,13 +86,13 @@
 
 /*Use a custom tick source that tells the elapsed time in milliseconds.
  *It removes the need to manually update the tick with `lv_tick_inc()`)*/
-#define LV_TICK_CUSTOM 0
+#define LV_TICK_CUSTOM 1
 #if LV_TICK_CUSTOM
-    #define LV_TICK_CUSTOM_INCLUDE "Arduino.h"         /*Header for the system time function*/
-    #define LV_TICK_CUSTOM_SYS_TIME_EXPR (millis())    /*Expression evaluating to current system time in ms*/
+    // #define LV_TICK_CUSTOM_INCLUDE "Arduino.h"         /*Header for the system time function*/
+    // #define LV_TICK_CUSTOM_SYS_TIME_EXPR (millis())    /*Expression evaluating to current system time in ms*/
     /*If using lvgl as ESP32 component*/
-    // #define LV_TICK_CUSTOM_INCLUDE "esp_timer.h"
-    // #define LV_TICK_CUSTOM_SYS_TIME_EXPR ((esp_timer_get_time() / 1000LL))
+    #define LV_TICK_CUSTOM_INCLUDE "esp_timer.h"
+    #define LV_TICK_CUSTOM_SYS_TIME_EXPR ((esp_timer_get_time() / 1000LL))
 #endif   /*LV_TICK_CUSTOM*/
 
 /*Default Dot Per Inch. Used to initialize default sizes such as widgets sized, style paddings.
@@ -775,7 +775,7 @@
  ====================*/
 
 /*Show some widget. It might be required to increase `LV_MEM_SIZE` */
-#define LV_USE_DEMO_WIDGETS 1
+#define LV_USE_DEMO_WIDGETS 0
 #if LV_USE_DEMO_WIDGETS
     #define LV_DEMO_WIDGETS_SLIDESHOW 0
 #endif
@@ -784,7 +784,7 @@
 #define LV_USE_DEMO_KEYPAD_AND_ENCODER 0
 
 /*Benchmark your system*/
-#define LV_USE_DEMO_BENCHMARK 0
+#define LV_USE_DEMO_BENCHMARK 1
 #if LV_USE_DEMO_BENCHMARK
     /*Use RGB565A8 images with 16 bit color depth instead of ARGB8565*/
     #define LV_DEMO_BENCHMARK_RGB565A8 0

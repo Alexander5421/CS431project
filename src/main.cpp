@@ -2,6 +2,7 @@
 #include "my_lv_ports.h"
 #include <TFT_eSPI.h>
 #include <lvgl.h>
+#include "demos/lv_demos.h"
 
 #if LV_BUILD_EXAMPLES && LV_USE_LABEL
 

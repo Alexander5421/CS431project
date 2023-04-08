@@ -1,11 +1,39 @@
-#include "lvgl.h"
-#include "app_hal.h"
-
+#include <Arduino.h>
+#include "my_lv_ports.h"
+#include <TFT_eSPI.h>
+#include <lvgl.h>
 #include "demos/lv_demos.h"
+#include <WiFi.h>
+
 #if LV_BUILD_EXAMPLES && LV_USE_LABEL
 
 static lv_obj_t * label;
 static uint32_t seconds = 0;
+int timezone = 19;
+const char* ssid = "CS431";
+const char* password = "baiducom";
+
+void wifi_init(void) {
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.print("Connected to ");
+  Serial.println("SSID");
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
+  // get current time
+  // configTime(timezone * 3600, 0, "pool.ntp.org", "time.nist.gov");
+  // Serial.println("Waiting for NTP time sync: ");
+  // while (!time(nullptr)) {
+  //   Serial.print(".");
+  //   delay(1000);
+  // }
+  // Serial.println("");
+}
 
 static void update_clock(void)
 {
@@ -54,14 +82,30 @@ void lv_example_get_started_2(void)
     lv_timer_create(timer_callback, 1000, NULL);
 }
 
+
 #endif
-int main(void)
-{
-    lv_init();
+void setup() {
+  Serial.begin(115200); /* prepare for possible serial debug */
 
-    hal_setup();
+  String LVGL_Arduino = "Hello Arduino! ";
+  LVGL_Arduino += String('V') + lv_version_major() + "." + lv_version_minor() +
+                  "." + lv_version_patch();
 
-    lv_example_get_started_2();
+  Serial.println(LVGL_Arduino);
+  Serial.println("I am LVGL_Arduino");
+  wifi_init();
+  // time_t now;
+  // struct tm* timeinfo;
+  // time(&now);
+  // timeinfo = localtime(&now);
+  // seconds = timeinfo->tm_sec + timeinfo->tm_min * 60 + timeinfo->tm_hour * 3600;
+  lv_init();
+  my_disp_init();
+  lv_example_get_started_2();
+  Serial.println("Setup done");
+}
 
-    hal_loop();
+void loop() {
+  lv_timer_handler(); /* let the GUI do its work */
+  delay(5);
 }
